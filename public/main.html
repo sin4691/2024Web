@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="no-js" >
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="main.js" defer></script>
+    <title>cutedog</title>
+</head>
+
+<body>
+    <div id="container">
+        
+            <div include-html="header.ejs"></div>
+        
+        <div id="content">
+            <div style="height: 700px; width: 100%;" id="main_1">
+                <div style="height: 700px; width: 28%; margin-left:1%; background-color:rgb(51, 51, 51,0.5); color: white; font-size: 25px; float:left;">
+                    <h1 style="margin-top: 20px; margin-left: 10px;">CUTE DOG<br>CUTE PUPPY<br>CUTE CLOTHES</h1>
+                    <button type="button" onClick="location.href='shop.html'" style=" margin-left: 10px;margin-top: 5%; border: none; font-size: 40px; font-weight: bolder; background-color: black; color: white;">SHOP NOW</button>
+                </div>
+                <div id="main_puppy">
+                    <img src="images/main puppy3.jpg" style="width:100%; height:100%;  object-fit:cover;">
+                </div>
+            </div>
+            <div style="height: 600px; width: 100%; z-index: -1; margin-top: 200px;" id="main_2">
+                <div class="slide_wrapper">
+                    <ul class="slides flex">
+                        <li><img src="images/골지 올인원.jpg" alt="slide1"></li>
+                        <li><img src="images/코듀로이 오버롤즈.jpg" alt="slide2"></li>
+                        <li><img src="images/셜록체크 무스탕.jpg" alt="slide3"></li>
+                        <li><img src="images/체크떡볶이.jpg" alt="slide4"></li>
+                        <li><img src="images/코쿤펫 아기곰 패딩.jpg" alt="slide5"></li>
+                        <li><img src="images/코쿤펫 에어로히트 터틀넥.jpg" alt="slide6"></li>
+                        <li><img src="images/마카롱 터틀넥.jpg" alt="slide7"></li>
+                        <li><img src="images/골지폴라원피스.jpg" alt="slide10"></li>
+                    </ul>
+                  
+                </div>
+                  <p class="controls">
+                        <span class="prev"><i class="fas fa-chevron-left"></i></span>
+                        <span class="next"><i class="fas fa-chevron-right"></i></span>
+                    </p>
+                <div class="ha"></div>
+                <button type="button" onClick="location.href='shop.html'" style="position: absolute; left: 47%; transform: translate(-50%,-50%); margin: 50px; border: none; font-size: 40px; font-weight: bolder; background-color: gray; color: white;">SHOP ALL</button>
+            </div>
+
+        <div style="height: 700px; width: 100%;margin-top: 200px;" id="main_3">
+            <div id="main_3puppy">
+            <img src="images/homedog.jpg" style="width:100%; height:100%;  object-fit:cover;">
+            </div>
+            <div style="height: 700px; width: 38%; margin-right:1%; background-color:rgba(206, 217, 219, 0.5); color: black; font-size: 25px; float:left;">
+                <h1 style="margin-top: 20px; margin-left: 10px;">CUTE DOG의 활동</h1>
+                <h4 style=" margin-left: 10px;"><br>cute dog의 강아지 옷은 스타일과<br>편안함을 모두 제공합니다.<br>판매 수익의 일부는 동물 보호 단체에 기부되어,<br>더 많은 강아지들이 따뜻한 집을<br>찾을 수 있도록 돕습니다.</h4>
+                <button type="button" onClick="location.href='about.html'" style=" margin-left: 10px;margin-top: 5%; border: none; font-size: 40px; font-weight: bolder; background-color: black; color: white;">READ MORE</button>
+            </div>
+        </div>
+
+        <div style="height: 700px; width: 100%;margin-top: 100px;" id="main_5">
+            <div id="dog-list" style="margin-left: 6%; margin-top: 400px; "></div>
+            <div style="clear: both;"></div>
+            <div style=" text-align: center;    margin: 50px; font-size: 30px; font-weight: bolder; color: black;"><h1>새 주인을 기다리는 강아지들</h1></div>
+        </div>
+    
+
+
+        <div style="height: 700px; width: 100%;margin-top: 300px;" id="main_4">
+            <div style="height: 100px; width: 100%;">
+                <h1 style="position: absolute; left: 47%; transform: translate(-50%,-50%); margin: 50px; font-size: 40px; font-weight: bolder; color: black;">
+                    with us</h1>
+            </div>
+            <div style="height: 600px; width: 38%; margin-left:1%; background-color:rgba(214, 214, 214, 0.5); color: black; font-size: 25px; float:left;">
+                <h1 style="margin-top: 20px; margin-left: 10%;">동물자유연대</h1>
+                <h4 style=" margin-left: 10%;">동물자유연대는 인간에 의해 관리되는 <br>모든 동물들이 인도적인 대우를<br> 받게 하기위해서<br> 활동하는 단체입니다</h4>
+                <button type="button" onClick="location.href='https://www.animals.or.kr/support/intro'" style=" margin-left: 10%;margin-top: 5%; border: none; font-size: 40px; font-weight: bolder; background-color: black; color: white;">직접기부하기</button>
+            </div>
+            <div id="main_4puppy">
+                <img src="images/with.jpeg" style="width:100%; height:100%;  object-fit:cover;">
+            </div>
+        </div>
+
+        <div include-html="footer.ejs"></div>
+    </div>
+</body>
+<script src="main.js"></script>
+<script src="main2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/js/swiper.min.js"></script>
+</html>

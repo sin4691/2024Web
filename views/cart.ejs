@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0; /* 상품들 간의 여백 제거 */
+            padding: 10px;
+            border-bottom: 1px solid #ddd; /* 구분선 추가 */
+            background-color: #fff; /* 배경색을 흰색으로 */
+        }
+        .cart-item img {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .cart-item-controls button {
+            margin-top: 20px;
+            background-color: #d3d3d3; /* 밝은 회색 배경색 */
+            border: none; /* 테두리 제거 */
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item-controls button:hover {
+            background-color: #a9a9a9; /* 호버 시 색상 */
+        }
+        .select-all-container {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .select-all-container label {
+            margin-left: 5px;
+        }
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .purchase-button {
+            background-color: black;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .purchase-button:hover {
+            background-color: #333;
+        }
+        .remove-button {
+            background-color: #a9a9a9; /* 짙은 회색 배경색 */
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+        .remove-button:hover {
+            background-color: #808080; /* 호버 시 색상 */
+        }
+    </style>
+</head>
+<body>
+    <%- include('../public/header') %>
+    <div style="width: 60%; margin-left: 20%; padding: 20px;">
+        <h1>장바구니</h1>
+        <div class="select-all-container">
+            <label for="selectAll">모두 선택</label>
+            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+        </div>
+        <div id="cartItems"></div>
+        <div class="action-buttons">
+            <button class="remove-button" onclick="removeSelectedItems()">선택한 항목 삭제</button>
+        </div>
+        <h2 style="margin-top: 20px;">선택된 항목의 총합: <span id="totalPrice">0</span>원</h2>
+        <div class="action-buttons" style="margin-top: 40px;">
+            <button class="purchase-button" onclick="purchaseItems()">구매하기</button>
+        </div>
+    </div>
+    <script>
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                alert('로그인이 필요합니다');
+                window.location.href = '/login';
+            }
+        }
+
+        function getCart() {
+            const cart = localStorage.getItem('cart');
+            return cart ? JSON.parse(cart) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function displayCart() {
+            const cart = getCart();
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p>장바구니에 상품이 없습니다.</p>';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const productDiv = document.createElement('div');
+                productDiv.className = 'cart-item';
+                productDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <p>상품 이름: ${item.name}</p>
+                        <p>상품 ID: ${item.id}</p>
+                        <p>가격: ${item.price}원</p>
+                        <label for="quantity-${index}">수량:</label>
+                        <input type="number" id="quantity-${index}" value="${item.quantity}" min="1" data-index="${index}" onchange="updateQuantity(event)">
+                    </div>
+                    <div class="cart-item-controls">
+                        <input type="checkbox" class="select-item" data-index="${index}" onchange="updateTotalPrice()">
+                        <button onclick="removeItem(${index})">삭제</button>
+                    </div>
+                `;
+                cartItems.appendChild(productDiv);
+            });
+
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.addEventListener('change', updateQuantity);
+            });
+
+            updateTotalPrice();
+        }
+
+        function updateQuantity(event) {
+            const index = event.target.dataset.index;
+            const quantity = parseInt(event.target.value);
+
+            if (isNaN(quantity) || quantity <= 0) {
+                alert('올바른 수량을 입력해주세요.');
+                return;
+            }
+
+            const cart = getCart();
+            cart[index].quantity = quantity;
+            saveCart(cart);
+            displayCart();
+        }
+
+        function removeItem(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            displayCart();
+        }
+
+        function removeSelectedItems() {
+            let cart = getCart();
+            const selectedItems = document.querySelectorAll('.select-item:checked');
+            const indexesToRemove = Array.from(selectedItems).map(item => parseInt(item.dataset.index));
+
+            cart = cart.filter((_, index) => !indexesToRemove.includes(index));
+            saveCart(cart);
+            displayCart();
+        }
+
+        function toggleSelectAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.select-item');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            const selectedItems = document.querySelectorAll('.select-item:checked');
+            const cart = getCart();
+            let totalPrice = 0;
+
+            selectedItems.forEach(item => {
+                const index = parseInt(item.dataset.index);
+                const product = cart[index];
+                const price = parseFloat(product.price) || 0;
+                const quantity = parseInt(product.quantity) || 1;
+                totalPrice += price * quantity;
+            });
+
+            document.getElementById('totalPrice').textContent = totalPrice;
+        }
+
+        function purchaseItems() {
+            let cart = getCart();
+            const selectedItems = document.querySelectorAll('.select-item:checked');
+            const indexesToPurchase = Array.from(selectedItems).map(item => parseInt(item.dataset.index));
+
+            cart = cart.filter((_, index) => !indexesToPurchase.includes(index));
+            saveCart(cart);
+            alert('구매완료!');
+            displayCart();
+        }
+
+        window.onload = function() {
+            checkLoginStatus();
+            displayCart();
+        };
+    </script>
+    <%- include('../public/footer') %>
+</body>
+</html>
